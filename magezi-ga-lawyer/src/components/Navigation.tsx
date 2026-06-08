@@ -17,8 +17,6 @@ function Navigation() {
 
         <nav aria-label="Primary navigation">
           <a href="#library">{translate('legalLibrary')}</a>
-          <a href="#templates">{translate('documentTemplates')}</a>
-          <a href="#cases">{translate('caseTracking')}</a>
           <a href="#contact">Contact</a>
         </nav>
 
@@ -26,7 +24,7 @@ function Navigation() {
           <LanguageSwitcher />
           <a
             className="quick-exit"
-            href="https://www.google.com"
+            href=""
             target="_blank"
             rel="noreferrer noopener"
           >

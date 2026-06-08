@@ -1,7 +1,37 @@
-import { useLanguage } from '../contexts/LanguageContext'
+import { useState } from 'react'
+
+const heroImages = [
+  {
+    id: 1,
+    alt: 'Ugandan woman reviewing legal documents',
+    color: '#D8EAF6',
+  },
+  {
+    id: 2,
+    alt: 'Diverse professionals discussing legal matters',
+    color: '#C0E2FF',
+  },
+  {
+    id: 3,
+    alt: 'Person using Magezi ga Lawyer on mobile',
+    color: '#A8D8FF',
+  },
+]
 
 function HeroSection() {
-  const { translate } = useLanguage()
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % heroImages.length)
+  }
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + heroImages.length) % heroImages.length)
+  }
+
+  const goToImage = (index: number) => {
+    setCurrentImageIndex(index)
+  }
 
   return (
     <section className="hero-panel">
@@ -17,18 +47,40 @@ function HeroSection() {
           <a className="hero-button" href="#library">
             Explore the library
           </a>
-          <a className="hero-secondary" href="#templates">
-            Build a document
-          </a>
         </div>
       </div>
-      <div className="hero-panel-card">
-        <p className="card-label">{translate('legalLibrary')}</p>
-        <h2>Quick legal reference for everyday issues</h2>
-        <p>
-          Find clear summaries of common topics like land rights, contracts,
-          family law, and business guidance.
-        </p>
+      <div className="hero-carousel">
+        <button
+          className="carousel-arrow prev"
+          onClick={prevImage}
+          aria-label="Previous image"
+        >
+          ‹
+        </button>
+        <div className="carousel-container">
+          <div className="carousel-slide" style={{ backgroundColor: heroImages[currentImageIndex].color }}>
+            <span className="image-placeholder">
+              {heroImages[currentImageIndex].alt}
+            </span>
+          </div>
+        </div>
+        <button
+          className="carousel-arrow next"
+          onClick={nextImage}
+          aria-label="Next image"
+        >
+          ›
+        </button>
+        <div className="carousel-dots">
+          {heroImages.map((_, index) => (
+            <button
+              key={index}
+              className={`dot ${index === currentImageIndex ? 'active' : ''}`}
+              onClick={() => goToImage(index)}
+              aria-label={`Go to image ${index + 1}`}
+            />
+          ))}
+        </div>
       </div>
     </section>
   )
