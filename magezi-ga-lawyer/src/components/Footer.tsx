@@ -24,10 +24,7 @@ function Footer() {
             <ul>
               <li><Link to="/">Home</Link></li>
               <li><Link to="/practice-areas">Practice Areas</Link></li>
-              <li><Link to="/library">Legal Library</Link></li>
               <li><Link to="/about">About Us</Link></li>
-              <li><Link to="/contact">Contact</Link></li>
-              <li><Link to="/faq">FAQ</Link></li>
               <li><Link to="/templates">Document Templates</Link></li>
             </ul>
           </nav>
