@@ -1,38 +1,40 @@
 import './App.css'
+import { Routes, Route } from 'react-router-dom'
 import { LanguageProvider } from './contexts/LanguageContext'
 import Navigation from './components/Navigation'
-import HeroSection from './components/HeroSection'
-import LegalLibrary from './components/LegalLibrary'
+import Footer from './components/Footer'
+import HomePage from './pages/HomePage'
+import PracticeAreasPage from './pages/PracticeAreasPage'
+import LegalLibraryPage from './pages/LegalLibraryPage'
+import TeamPage from './pages/TeamPage'
+import AboutPage from './pages/AboutPage'
+import ContactPage from './pages/ContactPage'
+import FAQPage from './pages/FAQPage'
+import DocumentTemplatesPage from './pages/DocumentTemplatesPage'
+import SignInPage from './pages/SignInPage'
+import GetStartedPage from './pages/GetStartedPage'
 
 function App() {
   return (
     <LanguageProvider>
       <div className="app-shell">
-          <Navigation />
-          <main>
-            <HeroSection />
-            <LegalLibrary />
-            {/* <CaseTracker /> */}
-            <section className="contact-section" id="contact">
-              <div>
-                <p className="eyebrow">Support with confidence</p>
-                <h2>Stay grounded with a trusted path to legal help.</h2>
-                <p>
-                  Magezi ga Lawyer is built for clarity and ease. If you need
-                  more help, use the Emergency Help button or contact a local
-                  lawyer for advice.
-                </p>
-              </div>
-              <div className="contact-card">
-                <p>Emergency support line</p>
-                <strong>+256 791862269</strong>
-                <a className="hero-button" href="tel:+256700123456">
-                  Call now
-                </a>
-              </div>
-            </section>
-          </main>
-        </div>
+        <Navigation />
+        <main>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/practice-areas" element={<PracticeAreasPage />} />
+            <Route path="/library" element={<LegalLibraryPage />} />
+            <Route path="/team" element={<TeamPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/faq" element={<FAQPage />} />
+            <Route path="/templates" element={<DocumentTemplatesPage />} />
+            <Route path="/signin" element={<SignInPage />} />
+            <Route path="/get-started" element={<GetStartedPage />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
     </LanguageProvider>
   )
 }
