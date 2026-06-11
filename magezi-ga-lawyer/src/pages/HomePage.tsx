@@ -10,7 +10,9 @@ import slide6 from '../assets/hero_slide_6.png'
 import slide7 from '../assets/hero_slide_7.png'
 import slide8 from '../assets/hero.png'
 
-const heroImages = [
+interface Slide { id: number; src: string; alt: string }
+
+const FALLBACK_SLIDES: Slide[] = [
   { id: 1, src: slide1, alt: 'Ugandan lawyer reviewing legal documents in a modern office' },
   { id: 2, src: slide2, alt: 'Couple consulting a legal advisor' },
   { id: 3, src: slide3, alt: 'Woman signing an important legal document' },
@@ -21,13 +23,29 @@ const heroImages = [
   { id: 8, src: slide8, alt: 'Legal agreement handshake' },
 ]
 
+const API_BASE = (import.meta.env.VITE_API_URL as string | undefined) ?? 'http://localhost:8000'
+const SLIDES_API = `${API_BASE}/api/public/hero-slides`
 const AUTO_PLAY_MS = 4000
 
 /* ── Hero Image Carousel ── */
 function HeroCarousel() {
+  const [slides, setSlides] = useState<Slide[]>(FALLBACK_SLIDES)
   const [current, setCurrent] = useState(0)
   const [animating, setAnimating] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
+
+  // Load slides from backend; silently fall back to bundled images if unavailable
+  useEffect(() => {
+    fetch(SLIDES_API)
+      .then((res) => { if (!res.ok) throw new Error('not ok'); return res.json() })
+      .then((json) => {
+        const remote: Slide[] = (json.data ?? []).map((s: { id: number; image_url: string; alt: string }) => ({
+          id: s.id, src: s.image_url, alt: s.alt,
+        }))
+        if (remote.length > 0) setSlides(remote)
+      })
+      .catch(() => { /* backend offline — use fallback */ })
+  }, [])
 
   const goTo = useCallback((index: number) => {
     if (animating) return
@@ -39,12 +57,12 @@ function HeroCarousel() {
   }, [animating])
 
   const next = useCallback(() => {
-    goTo((current + 1) % heroImages.length)
-  }, [current, goTo])
+    goTo((current + 1) % slides.length)
+  }, [current, slides.length, goTo])
 
   const prev = useCallback(() => {
-    goTo((current - 1 + heroImages.length) % heroImages.length)
-  }, [current, goTo])
+    goTo((current - 1 + slides.length) % slides.length)
+  }, [current, slides.length, goTo])
 
   useEffect(() => {
     if (isHovered) return
@@ -61,7 +79,7 @@ function HeroCarousel() {
     >
       {/* Slides */}
       <div className="carousel-track">
-        {heroImages.map((img, idx) => (
+        {slides.map((img, idx) => (
           <div
             key={img.id}
             className={`carousel-slide-item ${idx === current ? 'active' : ''}`}
@@ -74,7 +92,7 @@ function HeroCarousel() {
               loading={idx === 0 ? 'eager' : 'lazy'}
               draggable={false}
             />
-            <span className="slide-counter">{idx + 1} / {heroImages.length}</span>
+            <span className="slide-counter">{idx + 1} / {slides.length}</span>
           </div>
         ))}
       </div>
@@ -85,7 +103,7 @@ function HeroCarousel() {
 
       {/* Dots */}
       <div className="carousel-dots" role="tablist">
-        {heroImages.map((_, idx) => (
+        {slides.map((_, idx) => (
           <button
             key={idx}
             role="tab"
