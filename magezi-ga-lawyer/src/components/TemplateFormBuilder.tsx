@@ -66,7 +66,7 @@ function TemplateFormBuilder() {
       <div className="section-header">
         <div>
           <p className="eyebrow">Document templates</p>
-          <h2>Build legal documents without the jargon.</h2>
+          <h2>Build legal documents .</h2>
         </div>
       </div>
       <div className="template-layout">
