@@ -75,10 +75,24 @@ function GetStartedPage() {
   const handleStep2 = async (e: React.FormEvent) => {
     e.preventDefault()
     setSubmitting(true)
-    // Simulate submission — replace with real API
-    await new Promise((res) => setTimeout(res, 1200))
-    setSubmitting(false)
-    navigate('/signin')
+    setError('')
+    try {
+      await api.register({
+        firstName: personal.firstName,
+        lastName: personal.lastName,
+        email: personal.email,
+        phone: personal.phone,
+        password: personal.password,
+        area: matter.area,
+        description: matter.description,
+        urgency: matter.urgency
+      })
+      setSubmitting(false)
+      navigate('/signin')
+    } catch (err: any) {
+      setSubmitting(false)
+      setError(err.message || 'Failed to register. Please try again.')
+    }
   }
 
   return (

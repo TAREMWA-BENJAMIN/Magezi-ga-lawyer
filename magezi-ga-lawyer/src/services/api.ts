@@ -60,6 +60,19 @@ export const api = {
     return res.json();
   },
 
+  async register(data: any) {
+    const res = await fetch(`${API_BASE}/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.message || 'Registration failed');
+    }
+    return res.json();
+  },
+
   async getActs() {
     const res = await fetch(`${API_BASE}/acts`);
     if (!res.ok) throw new Error('Failed to fetch acts');

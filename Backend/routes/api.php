@@ -62,6 +62,7 @@ Route::prefix('public')->group(function () {
     Route::get('/stats',           [PublicController::class, 'stats']);
     Route::get('/faq',             [PublicController::class, 'faq']);
     Route::post('/contact',        [PublicController::class, 'contactSubmit']);
+    Route::post('/register',       [PublicController::class, 'register']);
     Route::get('/library',         [PublicController::class, 'library']);
     Route::get('/milestones',      [PublicController::class, 'milestones']);
     Route::get('/core-values',     [PublicController::class, 'coreValues']);

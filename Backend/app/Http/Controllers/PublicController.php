@@ -72,4 +72,30 @@ class PublicController extends Controller
             'reference' => 'REF-' . strtoupper(substr(md5(now()->toISOString()), 0, 8)),
         ], 201);
     }
+
+    public function register(Request $request)
+    {
+        $validated = $request->validate([
+            'firstName' => 'required|string|max:255',
+            'lastName'  => 'required|string|max:255',
+            'email'     => 'required|email|max:255|unique:users',
+            'password'  => 'required|string|min:8',
+        ]);
+
+        $user = \App\Models\User::create([
+            'name' => trim($validated['firstName'] . ' ' . $validated['lastName']),
+            'email' => $validated['email'],
+            'password' => \Illuminate\Support\Facades\Hash::make($validated['password']),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Registration successful',
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+            ],
+        ], 201);
+    }
 }

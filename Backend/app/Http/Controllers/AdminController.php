@@ -57,6 +57,20 @@ class AdminController extends Controller
     }
 
     /**
+     * Registered Users Management
+     */
+    public function registeredUsers()
+    {
+        try {
+            $users = \App\Models\User::orderBy('created_at', 'desc')->get();
+        } catch (\Exception $e) {
+            $users = collect();
+        }
+        
+        return view('admin.users', compact('users'));
+    }
+
+    /**
      * Cases Management
      */
     public function cases()
@@ -134,6 +148,14 @@ class AdminController extends Controller
             'about_header_text' => 'Founded in 2005, Magezi ga Lawyer is one of Uganda\'s most trusted law firms — dedicated to making justice accessible, affordable, and effective for every Ugandan.',
             'about_mission_text' => 'To provide expert, compassionate legal services that empower ordinary Ugandans to navigate the law with confidence — whether in court, in business, or in everyday life.',
             'about_vision_text' => 'A Uganda where no one is denied justice because of the complexity of the law or the cost of legal services. We envision a society where legal knowledge is a right, not a privilege.',
+            'footer_tagline' => 'Bridging the gap between Ugandan citizens and the legal system since 2009. We believe that understanding your rights should never be complicated.',
+            'footer_phone' => '+256 791 862 269',
+            'footer_email' => 'info@magezi.ug',
+            'footer_address' => 'Plot 15, Kampala Road, Kampala, Uganda',
+            'footer_facebook' => 'https://facebook.com',
+            'footer_twitter' => 'https://twitter.com',
+            'footer_linkedin' => 'https://linkedin.com',
+            'footer_bottom_text' => 'Empowering Ugandans with accessible legal knowledge.',
         ];
 
         try {
@@ -249,6 +271,14 @@ class AdminController extends Controller
             'about_header_text'      => 'required|string',
             'about_mission_text'     => 'required|string',
             'about_vision_text'      => 'required|string',
+            'footer_tagline'         => 'required|string',
+            'footer_phone'           => 'required|string',
+            'footer_email'           => 'required|string',
+            'footer_address'         => 'required|string',
+            'footer_facebook'        => 'nullable|string',
+            'footer_twitter'         => 'nullable|string',
+            'footer_linkedin'        => 'nullable|string',
+            'footer_bottom_text'     => 'required|string',
         ]);
 
         foreach ($data as $key => $value) {
