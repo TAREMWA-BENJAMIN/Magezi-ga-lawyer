@@ -219,7 +219,7 @@ function HomePage() {
       {/* ── Hero Section ── */}
       <section className="hero-panel" aria-label="Welcome to Magezi ga Lawyer">
         <div className="hero-copy">
-          <span className="eyebrow">Law made simple</span>
+          <span className="eyebrow">{siteSettings.home_hero_eyebrow || 'Law made simple'}</span>
           <h1>{siteSettings.home_hero_title || 'Accessible Legal Guidance for Every Ugandan'}</h1>
           <p>
             {siteSettings.home_hero_subtitle || 'Magezi ga Lawyer helps you find trusted legal information, build easy document templates, and connect with experienced lawyers — all in a calm, readable interface designed for clarity.'}
@@ -241,11 +241,10 @@ function HomePage() {
       {/* ── Practice Areas Preview ── */}
       <section className="practice-preview" aria-label="Our practice areas">
         <div className="section-header">
-          <span className="eyebrow">Practice Areas</span>
-          <h2>Comprehensive Legal Expertise</h2>
+          <span className="eyebrow">{siteSettings.home_practice_eyebrow || 'Practice Areas'}</span>
+          <h2>{siteSettings.home_practice_title || 'Comprehensive Legal Expertise'}</h2>
           <p>
-            Our team covers the areas of law most important to everyday Ugandans —
-            from property and family matters to criminal defence and business law.
+            {siteSettings.home_practice_text || 'Our team covers the areas of law most important to everyday Ugandans — from property and family matters to criminal defence and business law.'}
           </p>
         </div>
         <div className="practice-grid">

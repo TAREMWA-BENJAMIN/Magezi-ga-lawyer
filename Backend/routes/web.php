@@ -9,11 +9,18 @@ use App\Http\Controllers\AdminController;
 |--------------------------------------------------------------------------
 */
 
-// Root redirects to admin dashboard
+// Root redirects to admin dashboard overview
 Route::get('/', function () {
     return redirect('/admin');
 });
 
-// Admin dashboard — served by Laravel as a standalone Blade page
-Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-Route::get('/admin/{any}', [AdminController::class, 'dashboard'])->where('any', '.*')->name('admin.catch');
+// Admin dashboard routes (separated views)
+Route::prefix('admin')->group(function () {
+    Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/cases', [AdminController::class, 'cases'])->name('admin.cases');
+    Route::get('/team', [AdminController::class, 'team'])->name('admin.team');
+    Route::get('/tickets', [AdminController::class, 'tickets'])->name('admin.tickets');
+    Route::get('/practice-areas', [AdminController::class, 'practiceAreas'])->name('admin.practiceAreas');
+    Route::get('/site-settings', [AdminController::class, 'siteSettings'])->name('admin.siteSettings');
+    Route::get('/hero-slides', [AdminController::class, 'heroSlides'])->name('admin.heroSlides');
+});
