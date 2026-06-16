@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\HeroSlideController;
+use App\Http\Controllers\PracticeAreaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,12 @@ Route::prefix('admin')->group(function () {
     Route::post('/hero-slides/{id}',     [HeroSlideController::class, 'update']);   // POST used for multipart/form-data
     Route::delete('/hero-slides/{id}',   [HeroSlideController::class, 'destroy']);
     Route::patch('/hero-slides/reorder', [HeroSlideController::class, 'reorder']);
+
+    // Practice Areas admin CRUD
+    Route::get('/practice-areas',        [PracticeAreaController::class, 'index']);
+    Route::post('/practice-areas',       [PracticeAreaController::class, 'store']);
+    Route::post('/practice-areas/{id}',  [PracticeAreaController::class, 'update']);
+    Route::delete('/practice-areas/{id}',[PracticeAreaController::class, 'destroy']);
 });
 
 // Public API for React frontend
@@ -47,6 +54,10 @@ Route::prefix('public')->group(function () {
     Route::get('/faq',             [PublicController::class, 'faq']);
     Route::post('/contact',        [PublicController::class, 'contactSubmit']);
     Route::get('/library',         [PublicController::class, 'library']);
+    Route::get('/milestones',      [PublicController::class, 'milestones']);
+    Route::get('/core-values',     [PublicController::class, 'coreValues']);
+    Route::get('/testimonials',    [PublicController::class, 'testimonials']);
+    Route::get('/site-settings',   [PublicController::class, 'siteSettings']);
 
     // Hero Slides — public read
     Route::get('/hero-slides',     [HeroSlideController::class, 'index']);

@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react'
 import SearchBar, { type SearchItem } from './SearchBar'
+import { api } from '../services/api'
 
-const libraryItems: SearchItem[] = [
+// Define the extended item type based on the backend response
+interface ExtendedSearchItem extends SearchItem {
+  content?: string
+  relatedLinks?: { title: string; url: string }[]
+}
+
+const FALLBACK_ITEMS: ExtendedSearchItem[] = [
   {
     id: 'land-rights',
     title: 'Land Ownership Rights',
@@ -29,8 +36,25 @@ const libraryItems: SearchItem[] = [
 ]
 
 function LegalLibrary() {
-  const [results, setResults] = useState<SearchItem[]>(libraryItems)
-  const [selectedId, setSelectedId] = useState<string | null>(libraryItems[0]?.id ?? null)
+  const [items, setItems] = useState<ExtendedSearchItem[]>(FALLBACK_ITEMS)
+  const [results, setResults] = useState<ExtendedSearchItem[]>(FALLBACK_ITEMS)
+  const [selectedId, setSelectedId] = useState<string | null>(FALLBACK_ITEMS[0]?.id ?? null)
+
+  useEffect(() => {
+    api.getLibrary()
+      .then((data) => {
+        if (data && data.length > 0) {
+          const mappedData = data.map((item: any) => ({
+            ...item,
+            id: String(item.id),
+          }))
+          setItems(mappedData)
+          setResults(mappedData)
+          setSelectedId(String(mappedData[0].id))
+        }
+      })
+      .catch(() => { /* use fallback */ })
+  }, [])
 
   useEffect(() => {
     if (results.length === 0) {
@@ -53,7 +77,7 @@ function LegalLibrary() {
           <h2>Search easy legal guidance for common situations</h2>
         </div>
       </div>
-      <SearchBar items={libraryItems} onResults={setResults} />
+      <SearchBar items={items} onResults={setResults as (results: SearchItem[]) => void} />
       <div className="library-grid">
         <div className="library-list" role="list">
           {results.map((item) => (
@@ -75,7 +99,21 @@ function LegalLibrary() {
           {selected ? (
             <>
               <h3>{selected.title}</h3>
-              <p>{selected.summary}</p>
+              <p>{selected.content || selected.summary}</p>
+              {selected.relatedLinks && selected.relatedLinks.length > 0 && (
+                <div style={{ marginTop: '20px' }}>
+                  <h4>Related Links</h4>
+                  <ul>
+                    {selected.relatedLinks.map((link, idx) => (
+                      <li key={idx}>
+                        <a href={link.url} target="_blank" rel="noreferrer">
+                          {link.title}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </>
           ) : (
             <p className="muted">Search for a topic to see readable legal guidance.</p>

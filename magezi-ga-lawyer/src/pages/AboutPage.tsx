@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { api } from '../services/api'
 
 const milestones = [
   { year: '2005', event: 'Firm founded by Babirye Catherine Magezi in Kampala with a focus on property and land law.' },
@@ -33,7 +35,40 @@ const values = [
   },
 ]
 
+interface TeamMember {
+  id: number
+  name: string
+  role: string
+  specialization: string
+  bio: string
+  image: string
+  email: string
+}
+
+interface FirmStats {
+  casesResolved: number
+  yearsExperience: number
+  teamMembers: number
+  clientSatisfaction: number
+  areasOfPractice: number
+  documentsProcessed: number
+}
+
 function AboutPage() {
+  const [team, setTeam] = useState<TeamMember[]>([])
+  const [stats, setStats] = useState<FirmStats | null>(null)
+  const [siteSettings, setSiteSettings] = useState<any>({})
+  const [milestonesList, setMilestonesList] = useState<typeof milestones>([])
+  const [valuesList, setValuesList] = useState<typeof values>([])
+
+  useEffect(() => {
+    api.getTeam().then(setTeam).catch(console.error)
+    api.getStats().then(setStats).catch(console.error)
+    api.getSiteSettings().then(setSiteSettings).catch(console.error)
+    api.getMilestones().then(setMilestonesList).catch(console.error)
+    api.getCoreValues().then(setValuesList).catch(console.error)
+  }, [])
+
   return (
     <div className="about-page">
       {/* ── Page Header ── */}
@@ -43,12 +78,21 @@ function AboutPage() {
           <span aria-hidden="true">›</span>
           <span aria-current="page">About Us</span>
         </nav>
-        <h1>About Magezi ga Lawyer</h1>
+        <h1>{siteSettings.about_header_title || 'About Magezi ga Lawyer'}</h1>
         <p>
-          Founded in 2005, Magezi ga Lawyer is one of Uganda's most trusted law firms —
-          dedicated to making justice accessible, affordable, and effective for every Ugandan.
+          {siteSettings.about_header_text || 'Founded in 2005, Magezi ga Lawyer is one of Uganda\'s most trusted law firms — dedicated to making justice accessible, affordable, and effective for every Ugandan.'}
         </p>
       </section>
+
+      {/* ── Stats Section ── */}
+      {stats && (
+        <section className="about-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '20px', padding: '40px 20px', background: 'var(--surface)', borderRadius: '12px', margin: '20px', textAlign: 'center' }}>
+          <div><h3 style={{ fontSize: '2rem', color: 'var(--primary)', marginBottom: '5px' }}>{stats.casesResolved}+</h3><p>Cases Resolved</p></div>
+          <div><h3 style={{ fontSize: '2rem', color: 'var(--primary)', marginBottom: '5px' }}>{stats.yearsExperience}</h3><p>Years Experience</p></div>
+          <div><h3 style={{ fontSize: '2rem', color: 'var(--primary)', marginBottom: '5px' }}>{stats.teamMembers}</h3><p>Team Members</p></div>
+          <div><h3 style={{ fontSize: '2rem', color: 'var(--primary)', marginBottom: '5px' }}>{stats.clientSatisfaction}%</h3><p>Client Satisfaction</p></div>
+        </section>
+      )}
 
       {/* ── Mission & Vision ── */}
       <section className="about-mission">
@@ -57,44 +101,24 @@ function AboutPage() {
             <span className="mission-icon" aria-hidden="true">🎯</span>
             <h2>Our Mission</h2>
             <p>
-              To provide expert, compassionate legal services that empower ordinary Ugandans to
-              navigate the law with confidence — whether in court, in business, or in everyday life.
+              {siteSettings.about_mission_text || 'To provide expert, compassionate legal services that empower ordinary Ugandans to navigate the law with confidence — whether in court, in business, or in everyday life.'}
             </p>
           </article>
           <article className="mission-card">
             <span className="mission-icon" aria-hidden="true">🌟</span>
             <h2>Our Vision</h2>
             <p>
-              A Uganda where no one is denied justice because of the complexity of the law or the
-              cost of legal services. We envision a society where legal knowledge is a right, not a privilege.
+              {siteSettings.about_vision_text || 'A Uganda where no one is denied justice because of the complexity of the law or the cost of legal services. We envision a society where legal knowledge is a right, not a privilege.'}
             </p>
           </article>
         </div>
-      </section>
-
-      {/* ── Our Story ── */}
-      <section className="about-story">
-        <h2>Our Story</h2>
-        <p>
-          Magezi ga Lawyer was born out of a simple but powerful idea: that Ugandans deserve a law
-          firm that truly understands their lives. Our founder, Babirye Catherine Magezi, grew up
-          witnessing families torn apart by land disputes they could not afford to fight in court.
-          She established this firm with the conviction that legal expertise should serve people —
-          not intimidate them.
-        </p>
-        <p>
-          Over nearly two decades, we have grown from a one-partner office on Kampala Road to a
-          multi-disciplinary firm with specialists across property, family, criminal, employment,
-          and commercial law. Yet our founding ethos has never changed: put the client first,
-          speak plainly, and fight tirelessly for justice.
-        </p>
       </section>
 
       {/* ── Core Values ── */}
       <section className="about-values">
         <h2>Our Core Values</h2>
         <div className="values-grid">
-          {values.map((v) => (
+          {(valuesList.length > 0 ? valuesList : values).map((v) => (
             <article className="value-card" key={v.title}>
               <span className="value-icon" aria-hidden="true">{v.icon}</span>
               <h3>{v.title}</h3>
@@ -108,7 +132,7 @@ function AboutPage() {
       <section className="about-timeline">
         <h2>Our Journey</h2>
         <ol className="timeline-list">
-          {milestones.map((m) => (
+          {(milestonesList.length > 0 ? milestonesList : milestones).map((m) => (
             <li className="timeline-item" key={m.year}>
               <span className="timeline-year">{m.year}</span>
               <p className="timeline-event">{m.event}</p>
@@ -117,19 +141,27 @@ function AboutPage() {
         </ol>
       </section>
 
-      {/* ── CTA ── */}
-      <section className="cta-section">
-        <div className="cta-content">
-          <h2>Ready to Work With Us?</h2>
-          <p>
-            Meet our team, explore our practice areas, or contact us today for a free initial consultation.
-          </p>
-          <div className="cta-buttons">
-            <Link className="hero-button" to="/team">Meet Our Team</Link>
-            <Link className="hero-button hero-button--outline" to="/contact">Contact Us</Link>
+      {/* ── Team Section ── */}
+      {team.length > 0 && (
+        <section className="about-team" style={{ padding: '60px 20px', maxWidth: '1200px', margin: '0 auto' }}>
+          <h2 style={{ textAlign: 'center', marginBottom: '40px' }}>Meet Our Legal Team</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px' }}>
+            {team.map(member => (
+              <article key={member.id} className="team-card" style={{ background: 'var(--surface)', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
+                <img src={member.image} alt={member.name} style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
+                <div style={{ padding: '20px' }}>
+                  <h3 style={{ margin: '0 0 5px 0' }}>{member.name}</h3>
+                  <p style={{ color: 'var(--primary)', fontWeight: 'bold', margin: '0 0 10px 0' }}>{member.role}</p>
+                  <p style={{ fontSize: '0.9rem', color: 'var(--text-light)', marginBottom: '15px' }}><strong>Specialization:</strong> {member.specialization}</p>
+                  <p style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>{member.bio}</p>
+                  <a href={`mailto:${member.email}`} style={{ display: 'inline-block', marginTop: '15px', color: 'var(--primary)', textDecoration: 'none', fontWeight: 'bold' }}>Contact {member.name.split(' ')[0]} →</a>
+                </div>
+              </article>
+            ))}
           </div>
-        </div>
-      </section>
+        </section>
+      )}
+
     </div>
   )
 }

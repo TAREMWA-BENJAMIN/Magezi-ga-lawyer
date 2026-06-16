@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { api } from '../services/api'
 
-const steps = [
+const defaultSteps = [
   { id: 1, title: 'Create your account', desc: 'Fill in your personal details to open your free client account.' },
   { id: 2, title: 'Describe your matter', desc: 'Tell us briefly about the legal issue you need help with.' },
   { id: 3, title: 'Get matched', desc: "We'll connect you with the right specialist from our team." },
@@ -36,6 +37,21 @@ function GetStartedPage() {
   })
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
+  const [steps, setSteps] = useState(defaultSteps)
+
+  useEffect(() => {
+    api.getSiteSettings()
+      .then(settings => {
+        if (settings.get_started_steps) {
+          try {
+            setSteps(JSON.parse(settings.get_started_steps))
+          } catch (e) {
+            console.error('Failed to parse get_started_steps', e)
+          }
+        }
+      })
+      .catch(console.error)
+  }, [])
 
   const handlePersonalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPersonal({ ...personal, [e.target.name]: e.target.value })

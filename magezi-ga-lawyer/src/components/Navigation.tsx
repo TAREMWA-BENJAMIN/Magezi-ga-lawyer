@@ -7,7 +7,7 @@ const navItems = [
   { path: '/', label: 'Home' },
   { path: '/practice-areas', label: 'Practice Areas' },
   { path: '/about', label: 'About' },
-  { path: '/templates', label: 'Document Templates' },
+ 
 ]
 
 function Navigation() {

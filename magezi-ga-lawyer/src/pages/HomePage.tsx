@@ -23,8 +23,8 @@ const FALLBACK_SLIDES: Slide[] = [
   { id: 8, src: slide8, alt: 'Legal agreement handshake' },
 ]
 
-const API_BASE = (import.meta.env.VITE_API_URL as string | undefined) ?? 'http://localhost:8000'
-const SLIDES_API = `${API_BASE}/api/public/hero-slides`
+import { api } from '../services/api'
+
 const AUTO_PLAY_MS = 4000
 
 /* ── Hero Image Carousel ── */
@@ -36,8 +36,7 @@ function HeroCarousel() {
 
   // Load slides from backend; silently fall back to bundled images if unavailable
   useEffect(() => {
-    fetch(SLIDES_API)
-      .then((res) => { if (!res.ok) throw new Error('not ok'); return res.json() })
+    api.getHeroSlides()
       .then((json) => {
         const remote: Slide[] = (json.data ?? []).map((s: { id: number; image_url: string; alt: string }) => ({
           id: s.id, src: s.image_url, alt: s.alt,
@@ -128,95 +127,51 @@ function HeroCarousel() {
   )
 }
 
-/* ─── Animated Counter Hook ─── */
-function useCountUp(target: number, duration = 2000) {
-  const [count, setCount] = useState(0)
-  const ref = useRef<HTMLDivElement>(null)
-  const started = useRef(false)
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !started.current) {
-          started.current = true
-          const startTime = performance.now()
-          const step = (now: number) => {
-            const elapsed = now - startTime
-            const progress = Math.min(elapsed / duration, 1)
-            setCount(Math.floor(progress * target))
-            if (progress < 1) requestAnimationFrame(step)
-          }
-          requestAnimationFrame(step)
-        }
-      },
-      { threshold: 0.3 }
-    )
-    if (ref.current) observer.observe(ref.current)
-    return () => observer.disconnect()
-  }, [target, duration])
 
-  return { count, ref }
+interface PracticeArea {
+  id: number;
+  title: string;
+  slug: string;
+  short_description: string;
+  emoji_icon: string;
 }
 
-/* ─── Data ─── */
-const features = [
+const FALLBACK_PRACTICE_AREAS: PracticeArea[] = [
   {
-    icon: '📚',
-    title: 'Free Legal Information',
-    description: 'Access a comprehensive library of legal guides written in plain language, covering Ugandan laws on property, family, employment, and more.',
-  },
-  {
-    icon: '📄',
-    title: 'Document Templates',
-    description: 'Generate common legal documents like agreements, powers of attorney, and affidavits using our step-by-step template builder.',
-  },
-  {
-    icon: '📋',
-    title: 'Case Tracking',
-    description: 'Keep organised notes about your legal matter with our simple case tracking tool — accessible any time from your device.',
-  },
-  {
-    icon: '🌍',
-    title: 'Multilingual Support',
-    description: 'Use Magezi ga Lawyer in English or Luganda. We are working to add Runyankole, Ateso, and other Ugandan languages soon.',
-  },
-  {
-    icon: '🚨',
-    title: 'Emergency Help Line',
-    description: 'In urgent situations — domestic violence, unlawful detention, or land disputes — reach our 24/7 emergency line immediately.',
-  },
-  {
-    icon: '👨‍⚖️',
-    title: 'Expert Consultations',
-    description: 'Connect with experienced Ugandan lawyers for personalised advice. Book a consultation online or visit our Kampala office.',
-  },
-]
-
-const practiceAreas = [
-  {
-    icon: '🏠',
+    id: 1,
+    emoji_icon: '🏠',
     title: 'Property & Land Law',
-    description: 'Navigate land ownership, transactions, boundary disputes, and tenant rights under the Uganda Land Act.',
+    slug: 'property-law',
+    short_description: 'Navigate land ownership, transactions, boundary disputes, and tenant rights under the Uganda Land Act.',
   },
   {
-    icon: '👨‍👩‍👧‍👦',
+    id: 2,
+    emoji_icon: '👨‍👩‍👧‍👦',
     title: 'Family Law',
-    description: 'Expert guidance on marriage, divorce, child custody, adoption, and inheritance matters across all Ugandan cultures.',
+    slug: 'family-law',
+    short_description: 'Expert guidance on marriage, divorce, child custody, adoption, and inheritance matters across all Ugandan cultures.',
   },
   {
-    icon: '⚖️',
+    id: 3,
+    emoji_icon: '⚖️',
     title: 'Criminal Law',
-    description: 'Understand your rights if accused or arrested. We provide robust defence and representation in criminal proceedings.',
+    slug: 'criminal-law',
+    short_description: 'Understand your rights if accused or arrested. We provide robust defence and representation in criminal proceedings.',
   },
   {
-    icon: '💼',
+    id: 4,
+    emoji_icon: '💼',
     title: 'Employment Law',
-    description: 'Protect your workplace rights — unfair dismissal, wage disputes, contracts, and occupational safety compliance.',
+    slug: 'employment-law',
+    short_description: 'Protect your workplace rights — unfair dismissal, wage disputes, contracts, and occupational safety compliance.',
   },
   {
-    icon: '🏢',
+    id: 5,
+    emoji_icon: '🏢',
     title: 'Commercial Law',
-    description: 'Company registration, contract drafting, trade disputes, and regulatory compliance for Ugandan businesses.',
+    slug: 'commercial-law',
+    short_description: 'Company registration, contract drafting, trade disputes, and regulatory compliance for Ugandan businesses.',
   },
 ]
 
@@ -238,30 +193,36 @@ const testimonials = [
   },
 ]
 
-/* ─── Stat Counter Item ─── */
-function StatItem({ target, suffix, label }: { target: number; suffix: string; label: string }) {
-  const { count, ref } = useCountUp(target)
-  return (
-    <div className="stat-item" ref={ref}>
-      <span className="stat-number">{count.toLocaleString()}{suffix}</span>
-      <span className="stat-label">{label}</span>
-    </div>
-  )
-}
+
 
 /* ─── Home Page ─── */
 function HomePage() {
+  const [practiceAreas, setPracticeAreas] = useState<PracticeArea[]>(FALLBACK_PRACTICE_AREAS)
+  const [siteSettings, setSiteSettings] = useState<any>({})
+
+  useEffect(() => {
+    api.getPracticeAreas()
+      .then(data => {
+        if (data && data.length > 0) {
+          setPracticeAreas(data)
+        }
+      })
+      .catch(() => { /* use fallback */ })
+
+    api.getSiteSettings()
+      .then(data => setSiteSettings(data))
+      .catch(console.error)
+  }, [])
+
   return (
     <div className="home-page">
       {/* ── Hero Section ── */}
       <section className="hero-panel" aria-label="Welcome to Magezi ga Lawyer">
         <div className="hero-copy">
           <span className="eyebrow">Law made simple</span>
-          <h1>Accessible Legal Guidance for Every Ugandan</h1>
+          <h1>{siteSettings.home_hero_title || 'Accessible Legal Guidance for Every Ugandan'}</h1>
           <p>
-            Magezi ga Lawyer helps you find trusted legal information, build easy
-            document templates, and connect with experienced lawyers — all in a
-            calm, readable interface designed for clarity.
+            {siteSettings.home_hero_subtitle || 'Magezi ga Lawyer helps you find trusted legal information, build easy document templates, and connect with experienced lawyers — all in a calm, readable interface designed for clarity.'}
           </p>
           <div className="hero-actions">
             <Link className="hero-button" to="/library">
@@ -275,40 +236,7 @@ function HomePage() {
         <HeroCarousel />
       </section>
 
-      {/* ── Features Section ── */}
-      <section className="features-section" aria-label="Our key features">
-        <div className="section-header">
-          <span className="eyebrow">What we offer</span>
-          <h2>Everything You Need to Understand Your Legal Rights</h2>
-          <p>
-            From free information guides to expert consultations, we provide the tools
-            and support to help you navigate Uganda's legal system with confidence.
-          </p>
-        </div>
-        <div className="features-grid">
-          {features.map((feature) => (
-            <article className="feature-card" key={feature.title}>
-              <span className="feature-icon" aria-hidden="true">{feature.icon}</span>
-              <h3>{feature.title}</h3>
-              <p>{feature.description}</p>
-            </article>
-          ))}
-        </div>
-      </section>
 
-      {/* ── Statistics Section ── */}
-      <section className="stats-section" aria-label="Our track record">
-        <div className="section-header">
-          <span className="eyebrow">Our impact</span>
-          <h2>Making Justice Accessible Across Uganda</h2>
-        </div>
-        <div className="stats-grid">
-          <StatItem target={1200} suffix="+" label="Cases Resolved" />
-          <StatItem target={15} suffix="+" label="Years Experience" />
-          <StatItem target={98} suffix="%" label="Client Satisfaction" />
-          <StatItem target={6} suffix="" label="Expert Lawyers" />
-        </div>
-      </section>
 
       {/* ── Practice Areas Preview ── */}
       <section className="practice-preview" aria-label="Our practice areas">
@@ -322,10 +250,10 @@ function HomePage() {
         </div>
         <div className="practice-grid">
           {practiceAreas.map((area) => (
-            <article className="practice-card" key={area.title}>
-              <span className="practice-icon" aria-hidden="true">{area.icon}</span>
+            <article className="practice-card" key={area.id || area.title}>
+              <span className="practice-icon" aria-hidden="true">{area.emoji_icon}</span>
               <h3>{area.title}</h3>
-              <p>{area.description}</p>
+              <p>{area.short_description}</p>
               <Link to="/practice-areas" className="card-link">
                 Learn More →
               </Link>
@@ -334,49 +262,8 @@ function HomePage() {
         </div>
       </section>
 
-      {/* ── Testimonials Section ── */}
-      <section className="testimonials-section" aria-label="Client testimonials">
-        <div className="section-header">
-          <span className="eyebrow">Client Stories</span>
-          <h2>Trusted by Ugandans Across the Country</h2>
-        </div>
-        <div className="testimonials-grid">
-          {testimonials.map((t) => (
-            <article className="testimonial-card" key={t.name}>
-              <blockquote>
-                <p>"{t.quote}"</p>
-              </blockquote>
-              <footer>
-                <strong>{t.name}</strong>
-                <span>{t.location}</span>
-              </footer>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      {/* ── CTA Section ── */}
-      <section className="cta-section" aria-label="Get started">
-        <div className="cta-content">
-          <h2>Need Legal Help Today?</h2>
-          <p>
-            Whether you need to understand a land title, resolve a family dispute, or
-            defend your rights in court — we are here to help. Start with our free
-            resources or speak directly with a lawyer.
-          </p>
-          <div className="cta-actions">
-            <Link className="hero-button" to="/library">
-              Browse Legal Library
-            </Link>
-            <Link className="hero-button hero-button-outline" to="/contact">
-              Contact a Lawyer
-            </Link>
-            <a className="hero-button hero-button-emergency" href="tel:+256791862269">
-              🚨 Emergency: +256 791 862 269
-            </a>
-          </div>
-        </div>
-      </section>
+     
+      
     </div>
   )
 }

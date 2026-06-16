@@ -1,12 +1,25 @@
 import { Link } from 'react-router-dom'
 
-const practiceAreas = [
+import { useState, useEffect } from 'react'
+
+interface PracticeArea {
+  id: number;
+  title: string;
+  slug: string;
+  description: string;
+  emoji_icon: string;
+  features: string[];
+}
+
+const FALLBACK_PRACTICE_AREAS: PracticeArea[] = [
   {
-    icon: '🏠',
+    id: 1,
+    emoji_icon: '🏠',
     title: 'Property & Land Law',
+    slug: 'property-law',
     description:
       "Uganda's land tenure system is complex, with four distinct types: customary, freehold, mailo, and leasehold. Our property law team helps individuals, families, and communities navigate land ownership, transfers, and disputes with clarity and confidence.",
-    services: [
+    features: [
       'Land title verification and transfer',
       'Boundary and neighbour disputes',
       'Landlord and tenant matters',
@@ -16,11 +29,13 @@ const practiceAreas = [
     ],
   },
   {
-    icon: '👨‍👩‍👧‍👦',
+    id: 2,
+    emoji_icon: '👨‍👩‍👧‍👦',
     title: 'Family Law',
+    slug: 'family-law',
     description:
       'Family law in Uganda intersects with customary, religious, and statutory systems. We guide you through marriage, separation, custody, and succession with sensitivity and deep cultural understanding.',
-    services: [
+    features: [
       'Marriage registration and ceremonies',
       'Divorce and judicial separation',
       'Child custody and guardianship',
@@ -31,11 +46,13 @@ const practiceAreas = [
     ],
   },
   {
-    icon: '⚖️',
+    id: 3,
+    emoji_icon: '⚖️',
     title: 'Criminal Law',
+    slug: 'criminal-law',
     description:
       'Whether you are accused, a victim, or a witness, understanding criminal procedures in Uganda is critical. We provide strong defence representation and guide victims through the justice system at every stage.',
-    services: [
+    features: [
       'Bail applications and criminal defence',
       'Plea bargaining and case management',
       'Appeals and sentence reviews',
@@ -46,11 +63,13 @@ const practiceAreas = [
     ],
   },
   {
-    icon: '💼',
+    id: 4,
+    emoji_icon: '💼',
     title: 'Employment Law',
+    slug: 'employment-law',
     description:
       "Uganda's Employment Act 2006 and related statutes provide important protections for workers. We help both employees and employers understand their obligations and resolve workplace disputes effectively.",
-    services: [
+    features: [
       'Employment contract review and drafting',
       'Unfair dismissal claims',
       'Workplace discrimination and harassment',
@@ -61,11 +80,13 @@ const practiceAreas = [
     ],
   },
   {
-    icon: '🏢',
+    id: 5,
+    emoji_icon: '🏢',
     title: 'Commercial Law',
+    slug: 'commercial-law',
     description:
       "From start-ups to established businesses, navigating Uganda's regulatory landscape requires specialised legal knowledge. We support businesses with registration, compliance, contracts, and dispute resolution.",
-    services: [
+    features: [
       'Company registration and incorporation',
       'Commercial contract drafting and review',
       'Trade and intellectual property disputes',
@@ -77,7 +98,21 @@ const practiceAreas = [
   },
 ]
 
+import { api } from '../services/api'
+
 function PracticeAreasPage() {
+  const [practiceAreas, setPracticeAreas] = useState<PracticeArea[]>(FALLBACK_PRACTICE_AREAS)
+
+  useEffect(() => {
+    api.getPracticeAreas()
+      .then(data => {
+        if (data && data.length > 0) {
+          setPracticeAreas(data)
+        }
+      })
+      .catch(() => { /* use fallback */ })
+  }, [])
+
   return (
     <div className="practice-areas-page">
       {/* ── Page Header ── */}
@@ -98,17 +133,17 @@ function PracticeAreasPage() {
       {/* ── Practice Area Cards ── */}
       <section className="practice-grid" aria-label="Practice areas">
         {practiceAreas.map((area) => (
-          <article className="practice-area-card" key={area.title}>
+          <article className="practice-area-card" key={area.id || area.title}>
             <div className="practice-card-header">
-              <span className="practice-icon" aria-hidden="true">{area.icon}</span>
+              <span className="practice-icon" aria-hidden="true">{area.emoji_icon}</span>
               <h2>{area.title}</h2>
             </div>
             <p>{area.description}</p>
             <div className="practice-services">
               <h3>Key Services</h3>
               <ul>
-                {area.services.map((service) => (
-                  <li key={service}>{service}</li>
+                {(area.features || []).map((feature) => (
+                  <li key={feature}>{feature}</li>
                 ))}
               </ul>
             </div>
@@ -119,19 +154,7 @@ function PracticeAreasPage() {
         ))}
       </section>
 
-      {/* ── CTA ── */}
-      <section className="cta-section">
-        <div className="cta-content">
-          <h2>Not Sure Which Area Applies to You?</h2>
-          <p>
-            Legal matters often overlap multiple areas. Contact us for a free initial
-            consultation and we'll point you in the right direction.
-          </p>
-          <Link className="hero-button" to="/contact">
-            Get a Free Consultation
-          </Link>
-        </div>
-      </section>
+           
     </div>
   )
 }
