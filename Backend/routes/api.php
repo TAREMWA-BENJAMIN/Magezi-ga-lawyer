@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\HeroSlideController;
 use App\Http\Controllers\PracticeAreaController;
+use App\Http\Controllers\ActController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +49,10 @@ Route::prefix('admin')->group(function () {
     // Site Settings Admin
     Route::get('/site-settings',         [AdminController::class, 'getSiteSettings']);
     Route::post('/site-settings',        [AdminController::class, 'updateSiteSettings']);
+    
+    // Acts
+    Route::post('/acts',                 [ActController::class, 'store']);
+    Route::delete('/acts/{id}',          [ActController::class, 'destroy']);
 });
 
 // Public API for React frontend
@@ -65,5 +70,8 @@ Route::prefix('public')->group(function () {
 
     // Hero Slides — public read
     Route::get('/hero-slides',     [HeroSlideController::class, 'index']);
+    
+    // Acts - public read
+    Route::get('/acts',            [ActController::class, 'index']);
 });
 

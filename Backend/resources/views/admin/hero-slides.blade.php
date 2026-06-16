@@ -132,13 +132,12 @@
 
     try {
       const url = id ? '/api/admin/hero-slides/' + id : '/api/admin/hero-slides';
-      // If we are doing PUT with FormData in Laravel, we need _method=PUT
-      if (id) {
-        formData.append('_method', 'PUT');
-      }
 
       const res = await fetch(url, {
-        method: 'POST', // always POST when sending FormData with files, Laravel will read _method
+        method: 'POST', 
+        headers: {
+          'Accept': 'application/json'
+        },
         body: formData
       });
       if (!res.ok) {

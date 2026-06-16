@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\HeroSlide;
 use App\Models\SiteSetting;
+use App\Models\Act;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -165,6 +167,64 @@ class AdminController extends Controller
         }
         
         return view('admin.hero-slides', compact('heroSlides'));
+    }
+
+    /**
+     * Legal Acts Management
+     */
+    public function acts()
+    {
+        try {
+            $acts = Act::orderBy('created_at', 'desc')->get();
+        } catch (\Exception $e) {
+            $acts = collect();
+        }
+        
+        return view('admin.acts', compact('acts'));
+    }
+
+    public function storeAct(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'year' => 'nullable|string|max:4',
+            'pdf_document' => 'required|file|mimes:pdf|max:20480',
+        ]);
+
+        $file = $request->file('pdf_document');
+        $path = $file->store('acts', 'public');
+        
+        $bytes = $file->getSize();
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+        $bytes /= pow(1024, $pow);
+        $fileSize = round($bytes, 1) . ' ' . $units[$pow];
+
+        Act::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'year' => $request->year,
+            'file_path' => $path,
+            'file_size' => $fileSize,
+        ]);
+
+        return redirect()->route('admin.acts')->with('success', 'Legal Act uploaded successfully.');
+    }
+
+    public function destroyAct($id)
+    {
+        $act = Act::findOrFail($id);
+        
+        if (Storage::disk('public')->exists($act->file_path)) {
+            Storage::disk('public')->delete($act->file_path);
+        }
+        
+        $act->delete();
+        
+        return redirect()->route('admin.acts')->with('success', 'Legal Act deleted successfully.');
     }
 
     // --- Legacy API methods for mobile/React if needed ---

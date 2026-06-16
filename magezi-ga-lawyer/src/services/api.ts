@@ -59,4 +59,20 @@ export const api = {
     });
     return res.json();
   },
+
+  async getActs() {
+    const res = await fetch(`${API_BASE}/acts`);
+    if (!res.ok) throw new Error('Failed to fetch acts');
+    return res.json();
+  },
+
+  async uploadAct(formData: FormData) {
+    const ADMIN_API_BASE = API_BASE.replace('/public', '/admin');
+    const res = await fetch(`${ADMIN_API_BASE}/acts`, {
+      method: 'POST',
+      body: formData, // Do not set Content-Type, browser will set it to multipart/form-data with boundary
+    });
+    if (!res.ok) throw new Error('Failed to upload act');
+    return res.json();
+  },
 };

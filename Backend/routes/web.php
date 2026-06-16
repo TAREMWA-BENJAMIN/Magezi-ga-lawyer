@@ -23,4 +23,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/practice-areas', [AdminController::class, 'practiceAreas'])->name('admin.practiceAreas');
     Route::get('/site-settings', [AdminController::class, 'siteSettings'])->name('admin.siteSettings');
     Route::get('/hero-slides', [AdminController::class, 'heroSlides'])->name('admin.heroSlides');
+    Route::get('/acts', [AdminController::class, 'acts'])->name('admin.acts');
+    Route::post('/acts', [AdminController::class, 'storeAct'])->name('admin.acts.store');
+    Route::delete('/acts/{id}', [AdminController::class, 'destroyAct'])->name('admin.acts.destroy');
 });
