@@ -120,4 +120,29 @@ class AdminController extends Controller
             ['id' => 'TKT-004', 'subject' => 'Case status inquiry',          'from' => 'Mary Tendo',     'status' => 'resolved', 'priority' => 'medium', 'created' => now()->subDays(2)->toISOString()],
         ]);
     }
+    public function getSiteSettings()
+    {
+        return response()->json(\App\Models\SiteSetting::pluck('value', 'key'));
+    }
+
+    public function updateSiteSettings(Request $request)
+    {
+        $data = $request->validate([
+            'home_hero_title'    => 'required|string',
+            'home_hero_subtitle' => 'required|string',
+            'about_header_title' => 'required|string',
+            'about_header_text'  => 'required|string',
+            'about_mission_text' => 'required|string',
+            'about_vision_text'  => 'required|string',
+        ]);
+
+        foreach ($data as $key => $value) {
+            \App\Models\SiteSetting::updateOrCreate(
+                ['key' => $key],
+                ['value' => $value]
+            );
+        }
+
+        return response()->json(['success' => true]);
+    }
 }

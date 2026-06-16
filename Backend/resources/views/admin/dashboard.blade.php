@@ -401,6 +401,14 @@
         </span>
         Practice Areas
       </button>
+      <button class="nav-btn" data-view="site-settings" id="nav-site-settings">
+        <span class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </span>
+        Site Settings
+      </button>
     </nav>
 
     <div class="sidebar-footer">
@@ -561,6 +569,27 @@
         </div>
       </div>
 
+      <!-- ── SITE SETTINGS VIEW ─────────────────────────────────────────── -->
+      <section class="view" id="view-site-settings">
+        <div class="view-header">
+          <h2 style="font-size:1.1rem; font-weight:700; margin:0;">Home Page Settings</h2>
+          <p style="font-size:0.85rem; color:var(--text-soft); margin-top:4px;">Update the text displayed on the main landing page.</p>
+        </div>
+        <div class="section-card" style="max-width: 600px;">
+          <form id="site-settings-form">
+            <div style="margin-bottom:16px;">
+              <label style="display:block; font-size:0.85rem; color:var(--text-soft); margin-bottom:6px;">Hero Title</label>
+              <input type="text" id="ss-home-title" required style="width:100%; padding:10px 14px; background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--radius-sm); color:white; font-size:0.95rem;" />
+            </div>
+            <div style="margin-bottom:24px;">
+              <label style="display:block; font-size:0.85rem; color:var(--text-soft); margin-bottom:6px;">Hero Subtitle</label>
+              <textarea id="ss-home-subtitle" required rows="4" style="width:100%; padding:10px 14px; background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--radius-sm); color:white; font-size:0.9rem;"></textarea>
+            </div>
+            <button type="submit" id="ss-submit-btn" style="padding:10px 24px; border-radius:999px; border:none; background:var(--primary); color:white; font-weight:600; cursor:pointer; width:100%;">Save Changes</button>
+          </form>
+        </div>
+      </section>
+
     </main>
   </div><!-- /.main -->
 </div><!-- /#app -->
@@ -623,6 +652,10 @@ const MOCK = {
     {id:'TKT-004',subject:'Case status inquiry',           from:'Mary Tendo',   status:'resolved', priority:'medium', created:new Date(Date.now()-172800000).toISOString()},
   ],
   practiceAreas: [],
+  siteSettings: {
+    home_hero_title: 'Accessible Legal Guidance for Every Ugandan',
+    home_hero_subtitle: 'Magezi ga Lawyer helps you find trusted legal information, build easy document templates, and connect with experienced lawyers — all in a calm, readable interface designed for clarity.',
+  },
 };
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -911,6 +944,52 @@ async function deletePracticeArea(id) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   SITE SETTINGS LOGIC
+═══════════════════════════════════════════════════════════════════════════ */
+function renderSiteSettings() {
+  const ss = data.siteSettings || {};
+  document.getElementById('ss-home-title').value = ss.home_hero_title || '';
+  document.getElementById('ss-home-subtitle').value = ss.home_hero_subtitle || '';
+}
+
+document.getElementById('site-settings-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('ss-submit-btn');
+  const originalText = btn.textContent;
+  btn.textContent = 'Saving...';
+  btn.disabled = true;
+
+  const payload = {
+    home_hero_title: document.getElementById('ss-home-title').value,
+    home_hero_subtitle: document.getElementById('ss-home-subtitle').value,
+  };
+
+  try {
+    const res = await fetch('/api/admin/site-settings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) throw new Error('Failed to save settings');
+    
+    // Update local state
+    data.siteSettings = { ...data.siteSettings, ...payload };
+    
+    btn.textContent = 'Saved!';
+    btn.style.background = 'var(--accent)';
+    setTimeout(() => {
+      btn.textContent = originalText;
+      btn.style.background = 'var(--primary)';
+      btn.disabled = false;
+    }, 2000);
+  } catch (err) {
+    alert(err.message);
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }
+});
+
+/* ═══════════════════════════════════════════════════════════════════════════
    RENDER ACTIVE VIEW
 ═══════════════════════════════════════════════════════════════════════════ */
 function renderCurrentView() {
@@ -919,6 +998,7 @@ function renderCurrentView() {
   if (activeView === 'team')     renderTeam();
   if (activeView === 'tickets')  renderTickets();
   if (activeView === 'practice-areas') renderPracticeAreas();
+  if (activeView === 'site-settings') renderSiteSettings();
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -931,16 +1011,18 @@ async function fetchAll() {
   refBtn.querySelector('svg').classList.add('spinning');
 
   try {
-    const [s, c, u, a, t, pa] = await Promise.all([
+    const [s, c, u, a, t, pa, ss] = await Promise.all([
       fetch('/api/admin/stats').then(r => { if(!r.ok) throw new Error(); return r.json(); }),
       fetch('/api/admin/cases').then(r => { if(!r.ok) throw new Error(); return r.json(); }),
       fetch('/api/admin/users').then(r => { if(!r.ok) throw new Error(); return r.json(); }),
       fetch('/api/admin/activities').then(r => { if(!r.ok) throw new Error(); return r.json(); }),
       fetch('/api/admin/tickets').then(r => { if(!r.ok) throw new Error(); return r.json(); }),
       fetch('/api/admin/practice-areas').then(r => { if(!r.ok) throw new Error(); return r.json(); }).catch(() => []),
+      fetch('/api/admin/site-settings').then(r => { if(!r.ok) throw new Error(); return r.json(); }).catch(() => ({})),
     ]);
     data.stats      = s;
     data.practiceAreas = pa;
+    data.siteSettings  = ss;
     data.cases      = c.data ?? c;
     data.users      = u;
     data.activities = a;
@@ -968,7 +1050,7 @@ async function fetchAll() {
 /* ═══════════════════════════════════════════════════════════════════════════
    NAVIGATION
 ═══════════════════════════════════════════════════════════════════════════ */
-const VIEW_TITLES = {overview:'Overview', cases:'Cases', team:'Team', tickets:'Tickets'};
+const VIEW_TITLES = {overview:'Overview', cases:'Cases', team:'Team', tickets:'Tickets', 'practice-areas':'Practice Areas', 'site-settings':'Site Settings'};
 
 function switchView(viewId) {
   // hide all views

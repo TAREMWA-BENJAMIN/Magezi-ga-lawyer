@@ -44,6 +44,10 @@ Route::prefix('admin')->group(function () {
     Route::post('/practice-areas',       [PracticeAreaController::class, 'store']);
     Route::post('/practice-areas/{id}',  [PracticeAreaController::class, 'update']);
     Route::delete('/practice-areas/{id}',[PracticeAreaController::class, 'destroy']);
+
+    // Site Settings Admin
+    Route::get('/site-settings',         [AdminController::class, 'getSiteSettings']);
+    Route::post('/site-settings',        [AdminController::class, 'updateSiteSettings']);
 });
 
 // Public API for React frontend
