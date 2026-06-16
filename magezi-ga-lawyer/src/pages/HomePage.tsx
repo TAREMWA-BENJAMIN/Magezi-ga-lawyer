@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 
 import slide1 from '../assets/hero_slide_1.png'
@@ -175,23 +175,7 @@ const FALLBACK_PRACTICE_AREAS: PracticeArea[] = [
   },
 ]
 
-const testimonials = [
-  {
-    name: 'Nalubega Sarah',
-    location: 'Kampala',
-    quote: 'Magezi ga Lawyer helped me understand my land title documents in plain language. I was able to resolve a boundary dispute with my neighbour without going to court. The guides are clear and truly accessible.',
-  },
-  {
-    name: 'Okello David',
-    location: 'Gulu',
-    quote: 'When I was wrongfully dismissed from my job, I found the employment law guides on this site. They helped me understand my rights and prepare for my labour tribunal hearing. I won my case.',
-  },
-  {
-    name: 'Ainembabazi Grace',
-    location: 'Mbarara',
-    quote: 'As a single mother, understanding custody law was overwhelming. The family law section gave me confidence and clarity. The lawyers here genuinely care about helping ordinary Ugandans.',
-  },
-]
+
 
 
 

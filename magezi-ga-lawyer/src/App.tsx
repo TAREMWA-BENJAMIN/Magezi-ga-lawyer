@@ -1,5 +1,5 @@
 import './App.css'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import { LanguageProvider } from './contexts/LanguageContext'
 import Navigation from './components/Navigation'
 import Footer from './components/Footer'
@@ -14,10 +14,13 @@ import FAQPage from './pages/FAQPage'
 import ActsPage from './pages/ActsPage'
 
 function App() {
+  const location = useLocation()
+  const hideHeaderFooter = ['/signin', '/get-started'].includes(location.pathname)
+
   return (
     <LanguageProvider>
       <div className="app-shell">
-        <Navigation />
+        {!hideHeaderFooter && <Navigation />}
         <main>
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -31,10 +34,11 @@ function App() {
             <Route path="/faq" element={<FAQPage />} />
           </Routes>
         </main>
-        <Footer />
+        {!hideHeaderFooter && <Footer />}
       </div>
     </LanguageProvider>
   )
 }
 
 export default App
+
