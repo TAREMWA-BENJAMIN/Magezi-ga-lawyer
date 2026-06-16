@@ -11,6 +11,7 @@ import GetStartedPage from './pages/GetStartedPage'
 import LibraryPage from './pages/LibraryPage'
 import ContactPage from './pages/ContactPage'
 import FAQPage from './pages/FAQPage'
+import ActsPage from './pages/ActsPage'
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/signin" element={<SignInPage />} />
             <Route path="/get-started" element={<GetStartedPage />} />
             <Route path="/library" element={<LibraryPage />} />
+            <Route path="/acts" element={<ActsPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/faq" element={<FAQPage />} />
           </Routes>

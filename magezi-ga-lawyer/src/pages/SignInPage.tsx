@@ -17,7 +17,7 @@ function SignInPage() {
     await new Promise((res) => setTimeout(res, 1000))
     // For now, demo redirect
     if (form.email && form.password) {
-      navigate('/')
+      navigate('/acts')
     } else {
       setStatus('error')
     }
