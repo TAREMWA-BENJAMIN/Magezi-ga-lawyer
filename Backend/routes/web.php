@@ -17,9 +17,7 @@ Route::get('/', function () {
 // Admin dashboard routes (separated views)
 Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::get('/cases', [AdminController::class, 'cases'])->name('admin.cases');
     Route::get('/users', [AdminController::class, 'registeredUsers'])->name('admin.users');
-    Route::get('/team', [AdminController::class, 'team'])->name('admin.team');
     Route::get('/tickets', [AdminController::class, 'tickets'])->name('admin.tickets');
     Route::get('/practice-areas', [AdminController::class, 'practiceAreas'])->name('admin.practiceAreas');
     Route::get('/site-settings', [AdminController::class, 'siteSettings'])->name('admin.siteSettings');

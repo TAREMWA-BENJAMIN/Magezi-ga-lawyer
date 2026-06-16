@@ -27,7 +27,6 @@ Route::get('/dashboard/recent-cases',  [DashboardController::class, 'getRecentCa
 // Admin Dashboard API
 Route::prefix('admin')->group(function () {
     Route::get('/stats',       [AdminController::class, 'stats']);
-    Route::get('/cases',       [AdminController::class, 'cases']);
     Route::get('/users',       [AdminController::class, 'users']);
     Route::get('/activities',  [AdminController::class, 'activities']);
     Route::get('/tickets',     [AdminController::class, 'tickets']);

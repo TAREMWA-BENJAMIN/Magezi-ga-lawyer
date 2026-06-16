@@ -194,23 +194,6 @@
         </span>
         Overview
       </a>
-      <a href="{{ route('admin.cases') }}" class="nav-btn {{ request()->routeIs('admin.cases') ? 'active' : '' }}">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
-          </svg>
-        </span>
-        Cases
-      </a>
-      <a href="{{ route('admin.team') }}" class="nav-btn {{ request()->routeIs('admin.team') ? 'active' : '' }}">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
-          </svg>
-        </span>
-        Team
-      </a>
       <a href="{{ route('admin.users') }}" class="nav-btn {{ request()->routeIs('admin.users') ? 'active' : '' }}">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

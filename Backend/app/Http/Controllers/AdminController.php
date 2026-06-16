@@ -71,40 +71,6 @@ class AdminController extends Controller
     }
 
     /**
-     * Cases Management
-     */
-    public function cases()
-    {
-        $cases = [
-            ['id' => 'CASE-001', 'title' => 'Land Dispute - Central Region',       'category' => 'Property Law',    'status' => 'pending',     'priority' => 'high',   'createdDate' => now()->subDays(3)->format('Y-m-d'),  'assignedTo' => 'John Mukasa',    'progress' => 45,  'client' => 'Alice Nambi'],
-            ['id' => 'CASE-002', 'title' => 'Contract Breach - Commercial Deal',   'category' => 'Commercial Law',  'status' => 'in_progress', 'priority' => 'medium', 'createdDate' => now()->subDays(5)->format('Y-m-d'),  'assignedTo' => 'Sarah Nakambi',  'progress' => 75,  'client' => 'Robert Ssemakula'],
-            ['id' => 'CASE-003', 'title' => 'Family Law - Inheritance Dispute',    'category' => 'Family Law',      'status' => 'completed',   'priority' => 'low',    'createdDate' => now()->subDays(10)->format('Y-m-d'), 'assignedTo' => 'Grace Okonkwo',  'progress' => 100, 'client' => 'Mary Tendo'],
-            ['id' => 'CASE-004', 'title' => 'Employment Dispute - Unfair Dismissal','category' => 'Employment Law', 'status' => 'in_progress', 'priority' => 'high',   'createdDate' => now()->subDays(7)->format('Y-m-d'),  'assignedTo' => 'David Osei',     'progress' => 60,  'client' => 'Peter Wamala'],
-            ['id' => 'CASE-005', 'title' => 'Criminal Defense - Theft Charges',    'category' => 'Criminal Law',    'status' => 'pending',     'priority' => 'urgent', 'createdDate' => now()->subDays(1)->format('Y-m-d'),  'assignedTo' => 'Peter Banda',    'progress' => 20,  'client' => 'James Kiiza'],
-            ['id' => 'CASE-006', 'title' => 'Property Lease Agreement Review',     'category' => 'Property Law',    'status' => 'completed',   'priority' => 'low',    'createdDate' => now()->subDays(14)->format('Y-m-d'), 'assignedTo' => 'John Mukasa',    'progress' => 100, 'client' => 'Susan Byamugisha'],
-            ['id' => 'CASE-007', 'title' => 'Domestic Violence - Protection Order','category' => 'Family Law',      'status' => 'in_progress', 'priority' => 'urgent', 'createdDate' => now()->subDays(2)->format('Y-m-d'),  'assignedTo' => 'Grace Okonkwo',  'progress' => 55,  'client' => 'Anonymous'],
-            ['id' => 'CASE-008', 'title' => 'Business Partnership Dissolution',    'category' => 'Commercial Law',  'status' => 'pending',     'priority' => 'medium', 'createdDate' => now()->subDays(4)->format('Y-m-d'),  'assignedTo' => 'Sarah Nakambi',  'progress' => 15,  'client' => 'Kato Enterprises Ltd'],
-        ];
-        return view('admin.cases', compact('cases'));
-    }
-
-    /**
-     * Team Management
-     */
-    public function team()
-    {
-        $users = [
-            ['id' => 1, 'name' => 'John Mukasa',   'role' => 'Senior Lawyer',    'email' => 'john@magezi.ug',   'cases' => 32, 'status' => 'active',   'joinDate' => '2023-02-15', 'avatar' => 'JM'],
-            ['id' => 2, 'name' => 'Sarah Nakambi',  'role' => 'Advocate',         'email' => 'sarah@magezi.ug',  'cases' => 28, 'status' => 'active',   'joinDate' => '2023-05-20', 'avatar' => 'SN'],
-            ['id' => 3, 'name' => 'Grace Okonkwo',  'role' => 'Legal Aid Officer','email' => 'grace@magezi.ug',  'cases' => 21, 'status' => 'active',   'joinDate' => '2023-08-10', 'avatar' => 'GO'],
-            ['id' => 4, 'name' => 'David Osei',     'role' => 'Paralegal',        'email' => 'david@magezi.ug',  'cases' => 15, 'status' => 'active',   'joinDate' => '2024-01-05', 'avatar' => 'DO'],
-            ['id' => 5, 'name' => 'Peter Banda',    'role' => 'Advocate',         'email' => 'peter@magezi.ug',  'cases' => 19, 'status' => 'on_leave', 'joinDate' => '2023-11-12', 'avatar' => 'PB'],
-            ['id' => 6, 'name' => 'Amina Otieno',   'role' => 'Legal Aid Officer','email' => 'amina@magezi.ug',  'cases' => 12, 'status' => 'active',   'joinDate' => '2024-03-22', 'avatar' => 'AO'],
-        ];
-        return view('admin.team', compact('users'));
-    }
-
-    /**
      * Tickets Management
      */
     public function tickets()
