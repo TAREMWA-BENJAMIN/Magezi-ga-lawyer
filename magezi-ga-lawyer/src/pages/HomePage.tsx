@@ -209,9 +209,6 @@ function HomePage() {
             {siteSettings.home_hero_subtitle || 'Magezi ga Lawyer helps you find trusted legal information, build easy document templates, and connect with experienced lawyers — all in a calm, readable interface designed for clarity.'}
           </p>
           <div className="hero-actions">
-            <Link className="hero-button" to="/library">
-              Explore the Library
-            </Link>
             <Link className="hero-button hero-button-outline" to="/contact">
               Get a Consultation
             </Link>

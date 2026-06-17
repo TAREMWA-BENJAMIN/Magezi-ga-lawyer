@@ -25,10 +25,6 @@ const translations: Record<string, Record<Language, string>> = {
     en: 'Search legal guides, templates, and cases',
     lg: 'Londa ebyo ku mateeka, essomero ne nsonga',
   },
-  legalLibrary: {
-    en: 'Legal Information Library',
-    lg: 'Ekitongole ky Amateeka',
-  },
   documentTemplates: {
     en: 'Legal Document Templates',
     lg: 'Enkyusa za Katonda',

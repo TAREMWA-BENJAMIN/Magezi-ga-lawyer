@@ -25,4 +25,5 @@ Route::prefix('admin')->group(function () {
     Route::get('/acts', [AdminController::class, 'acts'])->name('admin.acts');
     Route::post('/acts', [AdminController::class, 'storeAct'])->name('admin.acts.store');
     Route::delete('/acts/{id}', [AdminController::class, 'destroyAct'])->name('admin.acts.destroy');
+    Route::get('/contacts', [AdminController::class, 'contactsView'])->name('admin.contacts');
 });

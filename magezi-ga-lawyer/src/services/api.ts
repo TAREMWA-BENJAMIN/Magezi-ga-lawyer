@@ -19,10 +19,6 @@ export const api = {
     const res = await fetch(`${API_BASE}/faq`);
     return res.json();
   },
-  async getLibrary() {
-    const res = await fetch(`${API_BASE}/library`);
-    return res.json();
-  },
   async getHeroSlides() {
     const res = await fetch(`${API_BASE}/hero-slides`);
     return res.json();

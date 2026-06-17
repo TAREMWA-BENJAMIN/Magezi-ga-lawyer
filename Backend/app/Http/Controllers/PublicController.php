@@ -66,10 +66,13 @@ class PublicController extends Controller
             'message' => 'required|string|max:5000',
         ]);
 
+        $submission = \App\Models\ContactSubmission::create($validated);
+
         return response()->json([
             'success' => true,
             'message' => 'Thank you for contacting Magezi Ga Lawyer. We have received your message and will respond within 24-48 hours.',
             'reference' => 'REF-' . strtoupper(substr(md5(now()->toISOString()), 0, 8)),
+            'id' => $submission->id,
         ], 201);
     }
 

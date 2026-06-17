@@ -171,6 +171,17 @@ class AdminController extends Controller
         return view('admin.acts', compact('acts'));
     }
 
+    public function contactsView()
+    {
+        try {
+            $submissions = \App\Models\ContactSubmission::orderBy('created_at', 'desc')->get();
+        } catch (\Exception $e) {
+            $submissions = collect();
+        }
+        
+        return view('admin.contacts', compact('submissions'));
+    }
+
     public function storeAct(Request $request)
     {
         $request->validate([
@@ -222,6 +233,7 @@ class AdminController extends Controller
     public function users() { return response()->json([]); }
     public function activities() { return response()->json([]); }
     public function ticketsApi() { return response()->json([]); }
+    public function contactSubmissions() { return response()->json(\App\Models\ContactSubmission::orderBy('created_at', 'desc')->get()); }
     public function getSiteSettings() { return response()->json(SiteSetting::pluck('value', 'key')); }
     
     public function updateSiteSettings(Request $request)

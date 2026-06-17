@@ -33,7 +33,6 @@ function Footer() {
               <li><Link to="/">Home</Link></li>
               <li><Link to="/practice-areas">Practice Areas</Link></li>
               <li><Link to="/about">About Us</Link></li>
-              <li><Link to="/library">Legal Library</Link></li>
               <li><Link to="/faq">FAQ</Link></li>
             </ul>
           </nav>
