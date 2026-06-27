@@ -84,15 +84,7 @@ function AboutPage() {
         </p>
       </section>
 
-      {/* ── Stats Section ── */}
-      {stats && (
-        <section className="about-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '20px', padding: '40px 20px', background: 'var(--surface)', borderRadius: '12px', margin: '20px', textAlign: 'center' }}>
-          <div><h3 style={{ fontSize: '2rem', color: 'var(--primary)', marginBottom: '5px' }}>{stats.casesResolved}+</h3><p>Cases Resolved</p></div>
-          <div><h3 style={{ fontSize: '2rem', color: 'var(--primary)', marginBottom: '5px' }}>{stats.yearsExperience}</h3><p>Years Experience</p></div>
-          <div><h3 style={{ fontSize: '2rem', color: 'var(--primary)', marginBottom: '5px' }}>{stats.teamMembers}</h3><p>Team Members</p></div>
-          <div><h3 style={{ fontSize: '2rem', color: 'var(--primary)', marginBottom: '5px' }}>{stats.clientSatisfaction}%</h3><p>Client Satisfaction</p></div>
-        </section>
-      )}
+
 
       {/* ── Mission & Vision ── */}
       <section className="about-mission">
@@ -141,26 +133,7 @@ function AboutPage() {
         </ol>
       </section>
 
-      {/* ── Team Section ── */}
-      {team.length > 0 && (
-        <section className="about-team" style={{ padding: '60px 20px', maxWidth: '1200px', margin: '0 auto' }}>
-          <h2 style={{ textAlign: 'center', marginBottom: '40px' }}>Meet Our Legal Team</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px' }}>
-            {team.map(member => (
-              <article key={member.id} className="team-card" style={{ background: 'var(--surface)', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
-                <img src={member.image} alt={member.name} style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
-                <div style={{ padding: '20px' }}>
-                  <h3 style={{ margin: '0 0 5px 0' }}>{member.name}</h3>
-                  <p style={{ color: 'var(--primary)', fontWeight: 'bold', margin: '0 0 10px 0' }}>{member.role}</p>
-                  <p style={{ fontSize: '0.9rem', color: 'var(--text-light)', marginBottom: '15px' }}><strong>Specialization:</strong> {member.specialization}</p>
-                  <p style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>{member.bio}</p>
-                  <a href={`mailto:${member.email}`} style={{ display: 'inline-block', marginTop: '15px', color: 'var(--primary)', textDecoration: 'none', fontWeight: 'bold' }}>Contact {member.name.split(' ')[0]} →</a>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      )}
+
 
     </div>
   )
