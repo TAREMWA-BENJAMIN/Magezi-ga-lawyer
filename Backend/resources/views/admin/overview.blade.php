@@ -357,10 +357,6 @@
     
     // Stats cards
     const cards = [
-      {label:'Total Cases',      value:s.totalCases.toLocaleString(),           icon:iconBriefcase(), color:'#3b82f6', trend:'↑ 12% this month'},
-      {label:'Active Users',     value:s.activeUsers.toLocaleString(),          icon:iconUsers(),     color:'#10b981', trend:'+'+s.newUsersThisWeek+' this week'},
-      {label:'Resolved Cases',   value:s.completedCases.toLocaleString(),       icon:iconCheck(),     color:'#8b5cf6', trend:s.successRate+'% success rate'},
-      {label:'Support Tickets',  value:s.totalSupportTickets.toLocaleString(),  icon:iconTicket(),    color:'#f59e0b', sub:s.pendingCases+' pending'},
       {label:'Legal Documents',  value:s.documentsInLibrary,                    icon:iconDocs(),      color:'#06b6d4', sub:'In library'},
       {label:'Emergency Calls',  value:s.emergencyCalls,                        icon:iconPhone(),     color:'#ef4444', sub:'This month'},
     ];
