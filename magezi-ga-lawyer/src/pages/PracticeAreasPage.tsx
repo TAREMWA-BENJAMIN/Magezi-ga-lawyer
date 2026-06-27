@@ -1,6 +1,21 @@
 import { Link } from 'react-router-dom'
-
 import { useState, useEffect } from 'react'
+
+import slide1 from '../assets/hero_slide_1.png'
+import slide2 from '../assets/hero_slide_2.png'
+import slide3 from '../assets/hero_slide_3.png'
+import slide4 from '../assets/hero_slide_4.png'
+import slide5 from '../assets/hero_slide_5.png'
+
+// Map practice area IDs to relevant slide photos
+const AREA_IMAGES: Record<number, string> = {
+  1: slide1, // Property & Land Law  → lawyer reviewing documents
+  2: slide2, // Family Law           → couple consulting advisor
+  3: slide4, // Criminal Law         → justice scales & gavel
+  4: slide5, // Employment Law       → person on smartphone
+  5: slide3, // Commercial Law       → signing documents
+}
+
 
 interface PracticeArea {
   id: number;
@@ -136,8 +151,12 @@ function PracticeAreasPage() {
           <article className={`elegant-practice-card ${index % 2 === 0 ? 'align-left' : 'align-right'}`} key={area.id || area.title}>
             <div className="elegant-card-visual">
               <div className="visual-glow"></div>
-              <div className="visual-glass">
-                <span className="elegant-icon" aria-hidden="true">{area.emoji_icon}</span>
+              <div className="visual-glass practice-photo-frame">
+                <img
+                  src={AREA_IMAGES[area.id] || slide1}
+                  alt={area.title}
+                  className="practice-area-photo"
+                />
               </div>
             </div>
             <div className="elegant-card-content">
