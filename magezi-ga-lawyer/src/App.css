@@ -1067,112 +1067,222 @@ nav a:hover {
   color: rgba(255, 255, 255, 0.3);
 }
 
-.breadcrumb .current {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-/* ── Practice Grid ── */
-.practice-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-8);
-  max-width: var(--container-wide);
+/* ── Elegant Practice Areas Layout ── */
+.elegant-practice-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+  max-width: var(--container-lg);
   margin: 0 auto;
-  padding: 0 var(--space-6);
+  padding: var(--space-8) var(--space-6);
 }
 
-.practice-area-card {
-  background: var(--surface);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  padding: var(--space-8);
-  transition: all var(--transition-smooth);
+.elegant-practice-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  align-items: center;
   position: relative;
-  overflow: hidden;
 }
 
-.practice-area-card::after {
-  content: '';
+@media (min-width: 900px) {
+  .elegant-practice-card {
+    flex-direction: row;
+    gap: var(--space-20);
+    justify-content: space-between;
+  }
+  
+  .elegant-practice-card.align-right {
+    flex-direction: row-reverse;
+  }
+}
+
+/* ── Card Visual (Glassmorphism + Glow) ── */
+.elegant-card-visual {
+  flex: 0 0 40%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  aspect-ratio: 1;
+  max-width: 400px;
+}
+
+.visual-glow {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: var(--gradient-blue);
-  transform: scaleX(0);
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, var(--primary) 0%, transparent 70%);
+  opacity: 0.15;
+  filter: blur(40px);
+  z-index: 0;
+  transition: opacity var(--transition-slow);
+}
+
+.elegant-practice-card:hover .visual-glow {
+  opacity: 0.3;
+}
+
+.visual-glass {
+  position: relative;
+  z-index: 1;
+  width: 80%;
+  height: 80%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-2xl);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: transform var(--transition-smooth), border-color var(--transition-base);
+}
+
+.elegant-practice-card:hover .visual-glass {
+  transform: translateY(-8px) scale(1.02);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.elegant-icon {
+  font-size: 5rem;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
   transition: transform var(--transition-smooth);
 }
 
-.practice-area-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-card-hover);
+.elegant-practice-card:hover .elegant-icon {
+  transform: scale(1.1) rotate(-5deg);
 }
 
-.practice-area-card:hover::after {
-  transform: scaleX(1);
-}
-
-.practice-icon {
-  width: 64px;
-  height: 64px;
-  display: grid;
-  place-items: center;
-  background: var(--color-blue-pale);
-  color: var(--primary);
-  border-radius: var(--radius);
-  font-size: var(--text-2xl);
-  margin-bottom: var(--space-5);
-  transition: all var(--transition-smooth);
-}
-
-.practice-area-card:hover .practice-icon {
-  background: var(--gradient-blue);
-  color: #ffffff;
-  transform: scale(1.05) rotate(-3deg);
-}
-
-.practice-area-card h3 {
-  font-family: var(--font-heading);
-  font-size: var(--text-xl);
-  margin-bottom: var(--space-3);
-  color: var(--text);
-}
-
-.practice-area-card > p {
-  font-size: var(--text-sm);
-  color: var(--muted);
-  line-height: var(--leading-relaxed);
-  margin-bottom: var(--space-5);
-}
-
-.practice-services {
+/* ── Card Content ── */
+.elegant-card-content {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--border-light);
+  gap: var(--space-6);
+  z-index: 2;
 }
 
-.practice-services li {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-size: var(--text-sm);
-  color: var(--text-soft);
-}
-
-.practice-services li::before {
-  content: '✓';
-  color: var(--accent);
-  font-weight: var(--weight-bold);
+.content-badge {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 4px 12px;
+  background: rgba(26, 107, 196, 0.1);
+  color: var(--primary);
+  border-radius: var(--radius-full);
   font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: 1px solid rgba(26, 107, 196, 0.2);
+}
+
+.elegant-card-content h2 {
+  font-family: var(--font-heading);
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-bold);
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.elegant-description {
+  font-size: var(--text-lg);
+  color: var(--text-muted);
+  line-height: var(--leading-relaxed);
+  max-width: 60ch;
+}
+
+/* ── Services List ── */
+.elegant-services-wrapper {
+  margin-top: var(--space-4);
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.elegant-services-wrapper h3 {
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--text);
+  margin-bottom: var(--space-4);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.elegant-services-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+@media (min-width: 640px) {
+  .elegant-services-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.elegant-services-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.check-icon-wrapper {
+  flex-shrink: 0;
   width: 20px;
   height: 20px;
+  background: var(--color-blue-pale);
+  color: var(--primary);
+  border-radius: 50%;
   display: grid;
   place-items: center;
-  background: var(--accent-soft);
+  margin-top: 2px;
+}
+
+.check-icon-wrapper svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* ── Elegant Action Button ── */
+.elegant-action {
+  margin-top: var(--space-6);
+}
+
+.elegant-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-8);
+  background: var(--gradient-blue);
+  color: #ffffff;
+  font-weight: var(--weight-semibold);
   border-radius: var(--radius-full);
-  flex-shrink: 0;
+  text-decoration: none;
+  transition: all var(--transition-base);
+  box-shadow: 0 4px 14px rgba(26, 107, 196, 0.3);
+}
+
+.elegant-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(26, 107, 196, 0.4);
+}
+
+.elegant-btn-primary .arrow-icon {
+  width: 18px;
+  height: 18px;
+  transition: transform var(--transition-base);
+}
+
+.elegant-btn-primary:hover .arrow-icon {
+  transform: translateX(4px);
 }
 
 

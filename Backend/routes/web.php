@@ -18,7 +18,7 @@ Route::get('/', function () {
 Route::prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/users', [AdminController::class, 'registeredUsers'])->name('admin.users');
-    Route::get('/tickets', [AdminController::class, 'tickets'])->name('admin.tickets');
+
     Route::get('/practice-areas', [AdminController::class, 'practiceAreas'])->name('admin.practiceAreas');
     Route::get('/site-settings', [AdminController::class, 'siteSettings'])->name('admin.siteSettings');
     Route::get('/hero-slides', [AdminController::class, 'heroSlides'])->name('admin.heroSlides');

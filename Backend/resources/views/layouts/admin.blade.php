@@ -202,14 +202,7 @@
         </span>
         Users
       </a>
-      <a href="{{ route('admin.tickets') }}" class="nav-btn {{ request()->routeIs('admin.tickets') ? 'active' : '' }}">
-        <span class="nav-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
-          </svg>
-        </span>
-        Tickets
-      </a>
+
       <a href="{{ route('admin.contacts') }}" class="nav-btn {{ request()->routeIs('admin.contacts') ? 'active' : '' }}">
         <span class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

@@ -332,14 +332,7 @@
   </div>
 </div>
 
-<!-- Activities -->
-<div class="section-card">
-  <h3>
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-    Recent Activity
-  </h3>
-  <ul class="activity-list" id="activity-list"><!-- JS --></ul>
-</div>
+
 @endsection
 
 @section('scripts')
@@ -358,7 +351,6 @@
     // Stats cards
     const cards = [
       {label:'Legal Documents',  value:s.documentsInLibrary,                    icon:iconDocs(),      color:'#06b6d4', sub:'In library'},
-      {label:'Emergency Calls',  value:s.emergencyCalls,                        icon:iconPhone(),     color:'#ef4444', sub:'This month'},
     ];
     document.getElementById('stats-grid').innerHTML = cards.map(c => `
       <div class="stat-card" style="--c:${c.color}">
@@ -434,17 +426,7 @@
       <ul class="donut-legend">${legend}</ul>
     `;
 
-    // Activity list
-    document.getElementById('activity-list').innerHTML = activities.map(a => `
-      <li class="activity-item">
-        <span class="activity-dot" style="background:${activityColor(a.status)}; box-shadow: 0 0 0 4px color-mix(in srgb, ${activityColor(a.status)} 20%, transparent);"></span>
-        <div class="activity-body">
-          <strong>${esc(a.title)}</strong>
-          <p>${esc(a.description)}</p>
-        </div>
-        <span class="activity-time">${timeAgo(a.timestamp)}</span>
-      </li>
-    `).join('');
+
   }
 
   document.addEventListener('DOMContentLoaded', loadData);

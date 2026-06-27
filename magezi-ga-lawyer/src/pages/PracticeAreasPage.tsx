@@ -130,26 +130,47 @@ function PracticeAreasPage() {
         </p>
       </section>
 
-      {/* ── Practice Area Cards ── */}
-      <section className="practice-grid" aria-label="Practice areas">
-        {practiceAreas.map((area) => (
-          <article className="practice-area-card" key={area.id || area.title}>
-            <div className="practice-card-header">
-              <span className="practice-icon" aria-hidden="true">{area.emoji_icon}</span>
+      {/* ── Elegant Practice Areas List ── */}
+      <section className="elegant-practice-container" aria-label="Practice areas">
+        {practiceAreas.map((area, index) => (
+          <article className={`elegant-practice-card ${index % 2 === 0 ? 'align-left' : 'align-right'}`} key={area.id || area.title}>
+            <div className="elegant-card-visual">
+              <div className="visual-glow"></div>
+              <div className="visual-glass">
+                <span className="elegant-icon" aria-hidden="true">{area.emoji_icon}</span>
+              </div>
+            </div>
+            <div className="elegant-card-content">
+              <div className="content-badge">Practice Area {index + 1}</div>
               <h2>{area.title}</h2>
+              <p className="elegant-description">{area.description}</p>
+              
+              <div className="elegant-services-wrapper">
+                <h3>Key Focus Areas</h3>
+                <ul className="elegant-services-list">
+                  {(area.features || []).map((feature) => (
+                    <li key={feature}>
+                      <span className="check-icon-wrapper">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                      </span>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
+              <div className="elegant-action">
+                <Link to="/contact" className="elegant-btn-primary">
+                  <span>Consult an Expert</span>
+                  <svg className="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </Link>
+              </div>
             </div>
-            <p>{area.description}</p>
-            <div className="practice-services">
-              <h3>Key Services</h3>
-              <ul>
-                {(area.features || []).map((feature) => (
-                  <li key={feature}>{feature}</li>
-                ))}
-              </ul>
-            </div>
-            <Link to="/contact" className="hero-button">
-              Enquire About {area.title.split(' ')[0]} Law
-            </Link>
           </article>
         ))}
       </section>

@@ -70,19 +70,7 @@ class AdminController extends Controller
         return view('admin.users', compact('users'));
     }
 
-    /**
-     * Tickets Management
-     */
-    public function tickets()
-    {
-        $tickets = [
-            ['id' => 'TKT-001', 'subject' => 'Need help filing land case',   'from' => 'Alice Nambi',     'status' => 'open',     'priority' => 'high',   'created' => now()->subHours(3)->toISOString()],
-            ['id' => 'TKT-002', 'subject' => 'Emergency - domestic violence','from' => 'Anonymous',       'status' => 'urgent',   'priority' => 'urgent', 'created' => now()->subHours(1)->toISOString()],
-            ['id' => 'TKT-003', 'subject' => 'Document translation needed',  'from' => 'Ssemakula R.',   'status' => 'pending',  'priority' => 'low',    'created' => now()->subDay()->toISOString()],
-            ['id' => 'TKT-004', 'subject' => 'Case status inquiry',          'from' => 'Mary Tendo',     'status' => 'resolved', 'priority' => 'medium', 'created' => now()->subDays(2)->toISOString()],
-        ];
-        return view('admin.tickets', compact('tickets'));
-    }
+
 
     /**
      * Practice Areas Management
