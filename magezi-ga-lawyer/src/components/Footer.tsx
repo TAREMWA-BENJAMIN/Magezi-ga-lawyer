@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '../services/api'
+import logo from '../assets/logo.png'
 
 function Footer() {
   const [settings, setSettings] = useState<any>({})
@@ -15,11 +16,7 @@ function Footer() {
       <div className="footer-content">
         <div className="footer-section footer-brand">
           <div className="footer-logo">
-            <span className="brand-mark">M</span>
-            <div>
-              <h3>Magezi ga Lawyer</h3>
-              <p>Accessible legal guidance for every Ugandan</p>
-            </div>
+            <img src={logo} alt="Magezi ga Lawyer" className="footer-brand-logo" />
           </div>
           <p className="footer-tagline">
             {settings.footer_tagline || 'Bridging the gap between Ugandan citizens and the legal system since 2009. We believe that understanding your rights should never be complicated.'}

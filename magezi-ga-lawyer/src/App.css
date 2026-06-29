@@ -51,6 +51,14 @@ main {
   text-decoration: none;
 }
 
+.brand-logo,
+.footer-brand-logo {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+}
+
+
 .brand:hover .brand-mark {
   transform: scale(1.05);
   box-shadow: 0 4px 16px rgba(15, 77, 133, 0.3);

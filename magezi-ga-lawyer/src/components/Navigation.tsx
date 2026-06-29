@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { useLanguage } from '../contexts/LanguageContext'
 import LanguageSwitcher from './LanguageSwitcher'
+import logo from '../assets/logo.png'
 
 const navItems = [
   { path: '/', label: 'Home' },
@@ -11,7 +11,6 @@ const navItems = [
 ]
 
 function Navigation() {
-  const { translate } = useLanguage()
   const location = useLocation()
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -24,11 +23,7 @@ function Navigation() {
     <header className="app-nav" role="banner">
       <div className="nav-content">
         <Link to="/" className="brand" aria-label="Magezi ga Lawyer — Home">
-          <span className="brand-mark">M</span>
-          <div>
-            <p className="brand-label">{translate('brand')}</p>
-            <p className="brand-subtitle">Accessible legal support for Uganda</p>
-          </div>
+          <img src={logo} alt="Magezi ga Lawyer" className="brand-logo" />
         </Link>
 
         <button

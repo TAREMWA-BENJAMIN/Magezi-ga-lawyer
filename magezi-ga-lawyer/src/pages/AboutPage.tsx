@@ -35,35 +35,12 @@ const values = [
   },
 ]
 
-interface TeamMember {
-  id: number
-  name: string
-  role: string
-  specialization: string
-  bio: string
-  image: string
-  email: string
-}
-
-interface FirmStats {
-  casesResolved: number
-  yearsExperience: number
-  teamMembers: number
-  clientSatisfaction: number
-  areasOfPractice: number
-  documentsProcessed: number
-}
-
 function AboutPage() {
-  const [team, setTeam] = useState<TeamMember[]>([])
-  const [stats, setStats] = useState<FirmStats | null>(null)
   const [siteSettings, setSiteSettings] = useState<any>({})
   const [milestonesList, setMilestonesList] = useState<typeof milestones>([])
   const [valuesList, setValuesList] = useState<typeof values>([])
 
   useEffect(() => {
-    api.getTeam().then(setTeam).catch(console.error)
-    api.getStats().then(setStats).catch(console.error)
     api.getSiteSettings().then(setSiteSettings).catch(console.error)
     api.getMilestones().then(setMilestonesList).catch(console.error)
     api.getCoreValues().then(setValuesList).catch(console.error)
