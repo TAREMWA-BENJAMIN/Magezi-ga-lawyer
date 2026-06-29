@@ -51,7 +51,18 @@ main {
   text-decoration: none;
 }
 
-.brand-logo,
+.brand-logo {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
 .footer-brand-logo {
   height: 80px;
   width: auto;
@@ -305,7 +316,7 @@ nav a:hover {
 }
 
 .footer-brand p {
-  color: rgba(255, 255, 255, 0.6);
+  color: #ffffff;
   font-size: var(--text-sm);
   line-height: var(--leading-relaxed);
   max-width: 30ch;
@@ -318,7 +329,7 @@ nav a:hover {
 }
 
 .footer-links a {
-  color: rgba(255, 255, 255, 0.65);
+  color: #ffffff;
   font-size: var(--text-sm);
   transition: color var(--transition-base), padding-left var(--transition-base);
 }
@@ -337,7 +348,7 @@ nav a:hover {
 .footer-contact p,
 .footer-contact a,
 .footer-contact span {
-  color: rgba(255, 255, 255, 0.65);
+  color: #ffffff;
   font-size: var(--text-sm);
 }
 
@@ -2896,7 +2907,7 @@ textarea {
    ============================================================ */
 
 .about-mission {
-  padding: var(--space-16) 0;
+  padding: var(--space-8) 0;
 }
 
 .mission-grid {
@@ -2945,13 +2956,13 @@ textarea {
 }
 
 .about-values {
-  padding: var(--space-16) 0;
+  padding: var(--space-8) 0;
 }
 
 .about-values h2 {
   font-family: var(--font-heading);
   font-size: var(--text-3xl);
-  margin-bottom: var(--space-10);
+  margin-bottom: var(--space-6);
   text-align: center;
 }
 
