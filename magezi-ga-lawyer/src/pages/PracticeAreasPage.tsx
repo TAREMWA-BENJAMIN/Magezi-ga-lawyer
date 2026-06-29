@@ -154,7 +154,6 @@ function PracticeAreasPage() {
               </div>
             </div>
             <div className="elegant-card-content">
-              <div className="content-badge">Practice Area {index + 1}</div>
               <h2>{area.title}</h2>
               <p className="elegant-description">{area.description}</p>
               
