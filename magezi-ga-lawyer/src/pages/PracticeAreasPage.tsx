@@ -137,12 +137,6 @@ function PracticeAreasPage() {
           <span aria-hidden="true">›</span>
           <span aria-current="page">Practice Areas</span>
         </nav>
-        <h1>Our Practice Areas</h1>
-        <p>
-          We provide expert legal services across the areas of law most relevant
-          to everyday Ugandans. Each practice area is staffed by experienced
-          lawyers committed to accessible, affordable, and effective representation.
-        </p>
       </section>
 
       {/* ── Elegant Practice Areas List ── */}
