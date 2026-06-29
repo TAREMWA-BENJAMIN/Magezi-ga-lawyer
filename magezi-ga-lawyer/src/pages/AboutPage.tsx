@@ -55,10 +55,6 @@ function AboutPage() {
           <span aria-hidden="true">›</span>
           <span aria-current="page">About Us</span>
         </nav>
-        <h1>{siteSettings.about_header_title || 'About Magezi ga Lawyer'}</h1>
-        <p>
-          {siteSettings.about_header_text || 'Founded in 2005, Magezi ga Lawyer is one of Uganda\'s most trusted law firms — dedicated to making justice accessible, affordable, and effective for every Ugandan.'}
-        </p>
       </section>
 
 
@@ -67,14 +63,12 @@ function AboutPage() {
       <section className="about-mission">
         <div className="mission-grid">
           <article className="mission-card">
-            <span className="mission-icon" aria-hidden="true">🎯</span>
             <h2>Our Mission</h2>
             <p>
               {siteSettings.about_mission_text || 'To provide expert, compassionate legal services that empower ordinary Ugandans to navigate the law with confidence — whether in court, in business, or in everyday life.'}
             </p>
           </article>
           <article className="mission-card">
-            <span className="mission-icon" aria-hidden="true">🌟</span>
             <h2>Our Vision</h2>
             <p>
               {siteSettings.about_vision_text || 'A Uganda where no one is denied justice because of the complexity of the law or the cost of legal services. We envision a society where legal knowledge is a right, not a privilege.'}
@@ -89,7 +83,6 @@ function AboutPage() {
         <div className="values-grid">
           {(valuesList.length > 0 ? valuesList : values).map((v) => (
             <article className="value-card" key={v.title}>
-              <span className="value-icon" aria-hidden="true">{v.icon}</span>
               <h3>{v.title}</h3>
               <p>{v.description}</p>
             </article>
